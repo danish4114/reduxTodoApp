@@ -1,0 +1,31 @@
+span {
+  float: right;
+}
+.badge {
+  font-size: 10px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+.child {
+  border: 1px solid black;
+  margin-bottom: 1px;
+  padding-left: 5px;
+  padding-top: 4px;
+}
+.form-control {
+  width: 20%;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.forEdit {
+  border: none;
+  outline-color: green;
+}
+.btn-danger {
+  float: right;
+  width: 59px;
+  margin-right: 7px;
+  height: 26px;
+  border-radius: 18px;
+  outline: none;
+}
