@@ -18,7 +18,7 @@ class Todo extends React.Component {
     this.props.onClick(event.target.id);
   };
   render() {
-    const result = _.map(this.props.todo, (data, index) => {
+    const result = _.map(this.props.content, (data, index) => {
       return (
         <div className="child" key={data.id}>
           <input

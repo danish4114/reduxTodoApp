@@ -1,20 +1,19 @@
 import React from "react";
 import Redux from "react-redux";
 import Todo from "./components";
-import { status, edittodo, deletetodo } from "./actions";
+import { completed, editTodo, deleteTodo } from "./actions";
 import { connect } from "react-redux";
 import AddTodo from "./addTodo";
 
-const mapStatusToProps = todo => {
+const mapStatusToProps = state => {
   return {
-    status: todo.todoReducer.completed,
-    todo: todo.todoReducer
+    content: state
   };
 };
 const mapDispatchToProps = dispatch => ({
-  onChange: index => dispatch(status(index)),
-  onEdit: (newValue, index) => dispatch(edittodo(newValue, index)),
-  onClick: index => dispatch(deletetodo(index))
+  onChange: index => dispatch(completed(index)),
+  onEdit: (newValue, index) => dispatch(editTodo(newValue, index)),
+  onClick: index => dispatch(deleteTodo(index))
 });
 const statusContent = connect(
   mapStatusToProps,

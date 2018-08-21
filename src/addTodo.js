@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addtodo } from "./actions";
+import { addTodo } from "./actions";
 
 class AddTodo extends React.Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class AddTodo extends React.Component {
 }
 const mapStateToProps = state => ({});
 const mapDisptachToProps = dispatch => ({
-  onChange: text => dispatch(addtodo(text))
+  onChange: text => dispatch(addTodo(text))
 });
 
 export default connect(
