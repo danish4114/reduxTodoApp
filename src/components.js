@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./App.css";
-import AddTodo from "./addTodo";
 import _ from "lodash";
 
 class Todo extends React.Component {
@@ -9,7 +8,11 @@ class Todo extends React.Component {
     super(props);
   }
   editHandleChange = event => {
+    event.preventDefault();
+    if(this.props.match.path=='/edittodo'){
+      this.setState({ value: event.target.value });
     this.props.onEdit(event.target.value, event.target.id);
+    }
   };
   HandleChange = event => {
     this.props.onChange(event.target.id);
@@ -51,7 +54,6 @@ class Todo extends React.Component {
     return (
       <div className="container">
         {result}
-        <AddTodo />
       </div>
     );
   }
