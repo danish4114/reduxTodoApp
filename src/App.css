@@ -29,3 +29,16 @@ span {
   border-radius: 18px;
   outline: none;
 }
+li{
+  list-style: none;
+  display: inline-block;
+  padding: 10px;
+  background-color: bisque;
+  margin-right: 1px;
+}
+.main{
+  margin-top: 20px;
+}
+.addtodo{
+  margin-left: 25px;
+}

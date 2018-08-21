@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import Todo from "./containers";
+import LinkTodo from "./link";
 
 class App extends React.Component {
   render() {
-    return <Todo />;
+    return (
+      <div className="container main">
+        <LinkTodo />
+      </div>
+    );
   }
 }
 
