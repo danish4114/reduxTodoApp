@@ -18,9 +18,29 @@ class Todo extends React.Component {
   };
   HandleChange = event => {
     this.props.onChange(event.target.id);
+    const i = event.target.id;
+    const j = event.target.checked;
+    axios
+      .put(`http://localhost:3000/todo/${i}`, {
+        name: event.target.name,
+        id: event.target.id,
+        completed: j
+      })
+      .then(results => {
+        axios.get("http://localhost:3000/todo").then(results => {
+          this.setState({ afterFetch: results.data });
+          this.props.List(this.state.afterFetch);
+        });
+        this.setState({ afterFetch: results.data });
+      });
   };
   deleteHandle = event => {
-    axios.delete(`http://localhost:3000/todo/${event.target.id}`);
+    axios.delete(`http://localhost:3000/todo/${event.target.id}`).then(() => {
+      axios.get("http://localhost:3000/todo").then(results => {
+        this.setState({ afterFetch: results.data });
+        this.props.List(this.state.afterFetch);
+      });
+    });
   };
   componentWillMount() {
     axios.get("http://localhost:3000/todo").then(results => {
@@ -35,7 +55,8 @@ class Todo extends React.Component {
           <input
             type="checkbox"
             checked={data.completed}
-            id={index}
+            name={data.name}
+            id={data.id}
             onChange={this.HandleChange}
           />
           <label>
