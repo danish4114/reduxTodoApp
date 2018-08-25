@@ -1,35 +1,32 @@
-import { completed, addTodo, editTodo, deleteTodo } from "./actions";
+import { completed, addTodo, editTodo, deleteTodo, listTodo } from "./actions";
 import { handleActions } from "redux-actions";
 import update from "immutability-helper";
 
-const defaultState = [
-  { id: 1, name: "abc", completed: false },
-  { id: 2, name: "abc", completed: false }
-];
-const toggletodo = (defaultState, { payload: { id } }) =>
-  update(defaultState, {
-    $toggle: [(defaultState[id].completed = !defaultState[id].completed)]
+const defaultState = [];
+const ListTodo = (state, { payload: { list } }) => {
+  return update(state, {$set: list });
+};
+
+const toggleTodo = (state, { payload: { id } }) =>
+  update(state, {
+    $toggle: [(state[id].completed = !state[id].completed)]
   });
 
-const EditTodo = (defaultState, { payload: { newValue, index } }) =>
-  update(defaultState, {
-    name: { $set: (defaultState[index].name = newValue) }
+const EditTodo = (state, { payload: { newValue, index } }) =>
+  update(state, {
+    name: { $set: (state[index].name = newValue) }
   });
 
-let itemID = 3;
-const Addtodo = (defaultState, { payload: { text } }) =>
-  update(defaultState, {
-    $push: [{ id: itemID++, name: text, completed: false }]
-  });
+const DeleteTodo = (state, { payload: { index } }) =>
+  update(state, { $splice: [[index, 1]] });
 
-const DeleteTodo = (defaultState, { payload: { index } }) =>
-  update(defaultState, { $splice: [[index, 1]] });
+
 const statusReducer = handleActions(
   {
-    [completed]: toggletodo,
+    [completed]: toggleTodo,
     [editTodo]: EditTodo,
-    [addTodo]: Addtodo,
-    [deleteTodo]: DeleteTodo
+    [deleteTodo]: DeleteTodo,
+    [listTodo]: ListTodo
   },
   defaultState
 );

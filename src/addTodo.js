@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addTodo } from "./actions";
+import { completed } from "./actions";
+import axios from "axios";
 
 class AddTodo extends React.Component {
   constructor(props) {
@@ -15,14 +16,17 @@ class AddTodo extends React.Component {
     if (this.state.value == "") {
       alert("Please enter any todoname");
     } else {
-      this.props.onChange(this.state.value);
       this.setState({ value: "" });
+      axios.post("http://localhost:3000/todo", {
+        name: this.state.value,
+        completed: false
+      });
     }
   };
   render() {
     return (
       <div className="container">
-        <form onSubmit={this.handleChange}>
+        <form onSubmit={this.handleChange} method="POST">
           <input
             className="form-control"
             placeholder="AddTodo..."
@@ -39,12 +43,4 @@ class AddTodo extends React.Component {
     );
   }
 }
-const mapStateToProps = state => ({});
-const mapDisptachToProps = dispatch => ({
-  onChange: text => dispatch(addTodo(text))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDisptachToProps
-)(AddTodo);
+export default AddTodo;
