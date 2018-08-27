@@ -1,8 +1,6 @@
-import React from "react";
-import Redux from "react-redux";
-import Todo from "./components";
-import { completed, editTodo, deleteTodo, listTodo } from "./actions";
+import { listTodo } from "./actions";
 import { connect } from "react-redux";
+import EditTodo from "./edittodo";
 
 const mapStatusToProps = state => {
   return {
@@ -12,8 +10,8 @@ const mapStatusToProps = state => {
 const mapDispatchToProps = dispatch => ({
   List: list => dispatch(listTodo(list))
 });
-const statusContent = connect(
+const EditContent = connect(
   mapStatusToProps,
   mapDispatchToProps
-)(Todo);
-export default statusContent;
+)(EditTodo);
+export default EditContent;
