@@ -1,33 +1,37 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addTodo } from "./actions";
+import { completed, forTarget, isEmpty } from "./actions";
+import axios from "axios";
+import AxiosServer from "./axios";
 
 class AddTodo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: "" };
   }
   inputChange = event => {
-    this.setState({ value: event.target.value });
+    this.props.Target(event.target.value);
   };
   handleChange = event => {
     event.preventDefault();
-    if (this.state.value == "") {
+    if (this.props.value == "") {
       alert("Please enter any todoname");
     } else {
-      this.props.onChange(this.state.value);
-      this.setState({ value: "" });
+      this.props.IsEmpty();
+      AxiosServer("postt", {
+        name: this.props.value,
+        completed: false
+      });
     }
   };
   render() {
     return (
       <div className="container">
-        <form onSubmit={this.handleChange}>
+        <form onSubmit={this.handleChange} method="POST">
           <input
             className="form-control"
             placeholder="AddTodo..."
-            value={this.state.value}
-            style={{ border: !this.state.value ? "1px solid red" : "" }}
+            value={this.props.value}
+            style={{ border: !this.props.value ? "1px solid red" : "" }}
             onChange={this.inputChange}
             type="text"
           />
@@ -39,12 +43,19 @@ class AddTodo extends React.Component {
     );
   }
 }
-const mapStateToProps = state => ({});
-const mapDisptachToProps = dispatch => ({
-  onChange: text => dispatch(addTodo(text))
-});
-
+function mapStateToProps(state) {
+  return {
+    value: state.value,
+    id: state.id
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    Target: (value, index) => dispatch(forTarget(value, index)),
+    IsEmpty: value => dispatch(isEmpty(value))
+  };
+}
 export default connect(
   mapStateToProps,
-  mapDisptachToProps
+  mapDispatchToProps
 )(AddTodo);
