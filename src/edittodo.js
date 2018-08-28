@@ -8,38 +8,28 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import AxiosServer from "./axios";
 
 class EditTodo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { state: this.props.content, value: "" };
-  }
-  componentWillMount() {
-    this.setState({ value: this.props.value });
   }
   targetHandler = event => {
-    if (this.props.history.location.pathname == "/edittodo") {
-      this.setState({ value: event.target.value });
-      let clone = this.state.state;
-      clone[this.props.index].name = event.target.value;
-      this.setState({ state: clone });
-    }
+    this.props.Isvalue(this.props.index, event.target.value);
   };
   editHandleChange = event => {
     event.preventDefault();
     if (
-      !this.state.value == "" &&
+      !this.props.clone[this.props.index].name == "" &&
       this.props.history.location.pathname == "/edittodo"
     ) {
-      axios
-        .put(`http://localhost:3000/todo/${this.props.id}`, {
-          name: this.state.value,
-          id: this.props.id,
-          completed: this.props.completed
-        })
-        .then(results => {
-          this.props.history.push("/listtodo");
-        });
+      AxiosServer("put", {
+        name: this.props.clone[this.props.index].name,
+        i: this.props.id,
+        completed: this.props.completed
+      }).then(() => {
+        this.props.history.push("/listtodo");
+      });
     } else {
       alert("item list can't be empty");
     }
@@ -50,7 +40,7 @@ class EditTodo extends React.Component {
         <div>
           <form onSubmit={this.editHandleChange}>
             <input
-              value={this.state.value}
+              value={this.props.clone[this.props.index].name}
               className="form-control"
               onChange={this.targetHandler}
               type="text"

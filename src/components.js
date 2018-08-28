@@ -5,58 +5,49 @@ import _ from "lodash";
 import axios from "axios";
 import EditTodo from "./editContainer";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import AxiosServer from "./axios";
 
 class Todo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { afterFetch: [], isClicked: false };
   }
   HandleChange = event => {
     if (this.props.history.location.pathname == "/edittodo") {
       const i = event.target.id;
       const j = event.target.checked;
-      axios
-        .put(`http://localhost:3000/todo/${i}`, {
+      try {
+        AxiosServer("put", {
           name: event.target.name,
-          id: event.target.id,
-          completed: j
-        })
-        .then(results => {
-          axios.get("http://localhost:3000/todo").then(results => {
-            this.setState({ afterFetch: results.data });
-            this.props.List(this.state.afterFetch);
+          completed: j,
+          i: i
+        }).then(() => {
+          AxiosServer("get").then(result => {
+            this.props.List(result.data);
           });
-          this.setState({ afterFetch: results.data });
         });
+      } catch (error) {}
     }
   };
   deleteHandle = event => {
     if (this.props.history.location.pathname == "/edittodo") {
-      axios.delete(`http://localhost:3000/todo/${event.target.id}`).then(() => {
-        axios.get("http://localhost:3000/todo").then(results => {
-          this.setState({ afterFetch: results.data });
-          this.props.List(this.state.afterFetch);
+      try {
+        AxiosServer("delete", { id: event.target.id }).then(() => {
+          AxiosServer("get").then(result => {
+            this.props.List(result.data);
+          });
         });
-      });
+      } catch (error) {}
     }
   };
   componentWillMount() {
-    axios.get("http://localhost:3000/todo").then(results => {
-      this.setState({ afterFetch: results.data });
-      this.props.List(this.state.afterFetch);
+    AxiosServer("get").then(result => {
+      this.props.List(result.data);
     });
   }
-  edit = () => {
-    this.setState({ isClicked: true });
-  };
   render() {
-    let result = _.map(this.props.content, (data, index) => {
+    let result = _.map(this.props.afterFetch, (data, index) => {
       return (
-        <div
-          className="child"
-          style={{ marginBottom: this.state.isClicked ? "30px" : "0px" }}
-          key={index}
-        >
+        <div className="child" key={index}>
           <input
             type="checkbox"
             checked={data.completed}
@@ -67,9 +58,7 @@ class Todo extends React.Component {
           <label>
             <Router>
               <div>
-                <Link to="/edithere" onClick={this.edit}>
-                  {data.name}
-                </Link>
+                <Link to="/edithere">{data.name}</Link>
                 <Route
                   path="/edithere"
                   component={() => {
@@ -79,7 +68,7 @@ class Todo extends React.Component {
                         index={index}
                         completed={data.completed}
                         id={data.id}
-                        value={data.name}
+                        enteredValue={data.name}
                       />
                     );
                   }}

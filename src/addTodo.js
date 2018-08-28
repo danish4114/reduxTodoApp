@@ -1,24 +1,24 @@
 import React from "react";
 import { connect } from "react-redux";
-import { completed } from "./actions";
+import { completed, forTarget, isEmpty } from "./actions";
 import axios from "axios";
+import AxiosServer from "./axios";
 
 class AddTodo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: "" };
   }
   inputChange = event => {
-    this.setState({ value: event.target.value });
+    this.props.Target(event.target.value);
   };
   handleChange = event => {
     event.preventDefault();
-    if (this.state.value == "") {
+    if (this.props.value == "") {
       alert("Please enter any todoname");
     } else {
-      this.setState({ value: "" });
-      axios.post("http://localhost:3000/todo", {
-        name: this.state.value,
+      this.props.IsEmpty();
+      AxiosServer("postt", {
+        name: this.props.value,
         completed: false
       });
     }
@@ -30,8 +30,8 @@ class AddTodo extends React.Component {
           <input
             className="form-control"
             placeholder="AddTodo..."
-            value={this.state.value}
-            style={{ border: !this.state.value ? "1px solid red" : "" }}
+            value={this.props.value}
+            style={{ border: !this.props.value ? "1px solid red" : "" }}
             onChange={this.inputChange}
             type="text"
           />
@@ -43,4 +43,19 @@ class AddTodo extends React.Component {
     );
   }
 }
-export default AddTodo;
+function mapStateToProps(state) {
+  return {
+    value: state.value,
+    id: state.id
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    Target: (value, index) => dispatch(forTarget(value, index)),
+    IsEmpty: value => dispatch(isEmpty(value))
+  };
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddTodo);
