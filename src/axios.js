@@ -2,6 +2,7 @@ import axios from "axios";
 
 export default function AxiosServer(method, data) {
   const baseURL = "http://localhost:3000/todo";
+  // console.log(baseURL);
   if (method === "delete") {
     const URL = baseURL + "/" + data.id;
     return axios.delete(URL);

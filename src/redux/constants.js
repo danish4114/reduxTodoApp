@@ -1,0 +1,11 @@
+export const LIST_TODO = "LIST_TODO";
+export const IF_SUCCESS='IF_SUCCESS';
+export const FOR_DELETE='FOR_DELETE'
+export const DELETE_SUCCESS='DELETE_SUCCESS';
+export const ADD_TODO='ADD_TODO';
+export const ADDTODO_SUCCESS='ADDTODO_SUCCESS'
+export const FOR_TARGET = "FOR_TARGET";
+export const VALUE_TARGET = "VALUE_TARGET";
+export const IS_EMPTY = "IS_EMPTY";
+export const IS_VALUE = "IS_VALUE";
+export const IS_FOCUSED = "IS_FOCUSED";

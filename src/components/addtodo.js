@@ -1,8 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { completed, forTarget, isEmpty } from "./actions";
-import axios from "axios";
-import AxiosServer from "./axios";
 
 class AddTodo extends React.Component {
   constructor(props) {
@@ -17,10 +14,6 @@ class AddTodo extends React.Component {
       alert("Please enter any todoname");
     } else {
       this.props.IsEmpty();
-      AxiosServer("postt", {
-        name: this.props.value,
-        completed: false
-      });
     }
   };
   render() {
@@ -43,19 +36,4 @@ class AddTodo extends React.Component {
     );
   }
 }
-function mapStateToProps(state) {
-  return {
-    value: state.value,
-    id: state.id
-  };
-}
-function mapDispatchToProps(dispatch) {
-  return {
-    Target: (value, index) => dispatch(forTarget(value, index)),
-    IsEmpty: value => dispatch(isEmpty(value))
-  };
-}
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddTodo);
+export default AddTodo

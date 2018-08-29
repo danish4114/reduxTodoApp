@@ -1,11 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./App.css";
 import _ from "lodash";
-import axios from "axios";
-import EditTodo from "./editContainer";
+import EditTodo from "../containers/edittodo";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import AxiosServer from "./axios";
 
 class Todo extends React.Component {
   constructor(props) {
@@ -16,36 +13,24 @@ class Todo extends React.Component {
       const i = event.target.id;
       const j = event.target.checked;
       try {
-        AxiosServer("put", {
-          name: event.target.name,
-          completed: j,
-          i: i
-        }).then(() => {
-          AxiosServer("get").then(result => {
-            this.props.List(result.data);
-          });
-        });
       } catch (error) {}
     }
   };
   deleteHandle = event => {
-    if (this.props.history.location.pathname == "/edittodo") {
+    // if (this.props.history.location.pathname == "/edittodo") {
       try {
-        AxiosServer("delete", { id: event.target.id }).then(() => {
-          AxiosServer("get").then(result => {
-            this.props.List(result.data);
-          });
-        });
+        this.props.forDelete({id:event.target.id});
+          this.props.getListTodo();
+       
       } catch (error) {}
-    }
+    // }
+};
+componentWillMount(){
+ this.props.getListTodo();
   };
-  componentWillMount() {
-    AxiosServer("get").then(result => {
-      this.props.List(result.data);
-    });
-  }
   render() {
-    let result = _.map(this.props.afterFetch, (data, index) => {
+    console.log(this.props.sstate.listReducer.data);
+    let result = _.map(this.props.sstate.listReducer.data, (data, index) => {
       return (
         <div className="child" key={index}>
           <input

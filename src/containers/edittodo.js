@@ -1,6 +1,6 @@
-import { listTodo,forTarget,isFocused,isValue } from "./actions";
+import { listTodo,forTarget,isFocused,isValue } from "../redux/actions";
 import { connect } from "react-redux";
-import EditTodo from "./edittodo";
+import EditTodo from "../components/edittodo";
 
 const mapStatusToProps = state => {
   return {
@@ -13,9 +13,9 @@ const mapStatusToProps = state => {
 const mapDispatchToProps = dispatch => {
 return{
   List: list => dispatch(listTodo(list)),
-  Value:(value)=>dispatch(forTarget(value)),
-  Isvalue:(index,value)=>dispatch(isValue(index,value)),
-  Focused:(index,value)=>dispatch(isFocused(index,value))
+//   Value:(value)=>dispatch(forTarget(value)),
+//   Isvalue:(index,value)=>dispatch(isValue(index,value)),
+//   Focused:(index,value)=>dispatch(isFocused(index,value))
 }};
 const EditContent = connect(
   mapStatusToProps,

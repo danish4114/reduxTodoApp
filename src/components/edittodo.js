@@ -1,6 +1,5 @@
 import React from "react";
 import _ from "lodash";
-import axios from "axios";
 import {
   BrowserRouter as Redirect,
   Router,
@@ -8,7 +7,6 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import AxiosServer from "./axios";
 
 class EditTodo extends React.Component {
   constructor(props) {
@@ -23,13 +21,6 @@ class EditTodo extends React.Component {
       !this.props.clone[this.props.index].name == "" &&
       this.props.history.location.pathname == "/edittodo"
     ) {
-      AxiosServer("put", {
-        name: this.props.clone[this.props.index].name,
-        i: this.props.id,
-        completed: this.props.completed
-      }).then(() => {
-        this.props.history.push("/listtodo");
-      });
     } else {
       alert("item list can't be empty");
     }
