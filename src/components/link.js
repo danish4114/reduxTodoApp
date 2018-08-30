@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import React from "react";
-import AddTodo from "../containers/addtodo";
-import Todo from "../containers/listtodo";
+import AddTodo from "../components/addtodo";
+import Todo from "../components/listtodo";
 
 class LinkTodo extends React.Component {
   constructor(props) {

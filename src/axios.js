@@ -7,7 +7,7 @@ export default function AxiosServer(method, data) {
     return axios.delete(URL);
   } else if (method === "get") {
     return axios.get(baseURL);
-  } else if (method === "put") {
+  } else if (method === "put" ) {
     return axios.put(baseURL + "/" + data.id, {
       name: data.name,
       id: data.id,

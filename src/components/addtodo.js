@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { forTarget, addTodo, isEmpty } from "../redux/actions";
 
 class AddTodo extends React.Component {
   constructor(props) {
@@ -34,4 +35,19 @@ class AddTodo extends React.Component {
     );
   }
 }
-export default AddTodo;
+function mapStateToProps(state) {
+  return {
+    value: state.addtodoReducer.value
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    targett: value => dispatch(forTarget(value)),
+    AddTodo: value => dispatch(addTodo(value)),
+    ForEmptyValue: () => dispatch(isEmpty())
+  };
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddTodo);

@@ -1,5 +1,7 @@
 import React from "react";
 import _ from "lodash";
+import { listTodo, targetNewValue, addNewValue } from "../redux/actions";
+import { connect } from "react-redux";
 import {
   BrowserRouter as Redirect,
   Router,
@@ -55,4 +57,18 @@ class EditTodo extends React.Component {
     );
   }
 }
-export default EditTodo;
+const mapStatusToProps = state => {
+  return {
+    clone: state.listReducer.clone
+  };
+};
+const mapDispatchToProps = dispatch => ({
+  List: list => dispatch(listTodo(list)),
+  targetValue: (value, index) => dispatch(targetNewValue(value, index)),
+  addnewValue: (name, id, completed) =>
+    dispatch(addNewValue(name, id, completed))
+});
+export default connect(
+  mapStatusToProps,
+  mapDispatchToProps
+)(EditTodo);
