@@ -4,30 +4,39 @@ import update from "immutability-helper";
 
 const initialState = {
   data: {},
-  isFetch: false,
-  isError: false,
   isSuccess: false,
-  message: ""
+  message: "",
+  clone: {}
 };
 const fetchSuccess = (state, action) => {
-//   console.log(state);
   return update(state, {
-    isLoggedIn: { $set: true },
-    isError: { $set: false },
-    isSuccess: { $set: false },
     message: { $set: "fetch success" }
   });
 };
 const forSuccess = (state, action) =>
   update(state, {
     data: { $set: action.payload },
+    clone: { $set: action.payload },
     isSuccess: { $set: true }
   });
-
+const targetEditValue = (state, action) => {
+  return update(state, {
+    clone: { [action.payload.index]: { name: { $set: action.payload.value } } }
+  });
+};
+const addnewValue = (state, action) => {
+  return update(state, {
+    clone: { $set: action.payload },
+    data: { $set: action.payload },
+    isSuccess: { $set: true }
+  });
+};
 export default handleActions(
   {
     [constants.LIST_TODO]: fetchSuccess,
-    [constants.IF_SUCCESS]: forSuccess
+    [constants.IF_SUCCESS]: forSuccess,
+    [constants.NEW_VALUE]: targetEditValue,
+    [constants.ADD_NEW_VALUE]: addnewValue
   },
   initialState
 );

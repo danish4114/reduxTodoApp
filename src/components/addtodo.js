@@ -6,15 +6,13 @@ class AddTodo extends React.Component {
     super(props);
   }
   inputChange = event => {
-    this.props.Target(event.target.value);
+    this.props.targett(event.target.value);
   };
   handleChange = event => {
     event.preventDefault();
-    if (this.props.value == "") {
-      alert("Please enter any todoname");
-    } else {
-      this.props.IsEmpty();
-    }
+    this.props.AddTodo(this.props.value);
+    this.props.ForEmptyValue();
+    this.props.history.push("/listtodo");
   };
   render() {
     return (
@@ -36,4 +34,4 @@ class AddTodo extends React.Component {
     );
   }
 }
-export default AddTodo
+export default AddTodo;

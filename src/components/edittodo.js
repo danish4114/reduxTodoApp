@@ -13,26 +13,36 @@ class EditTodo extends React.Component {
     super(props);
   }
   targetHandler = event => {
-    this.props.Isvalue(this.props.index, event.target.value);
+    event.preventDefault();
+    if (this.props.history.location.pathname == "/edittodo") {
+      event.preventDefault();
+      let value = event.target.value;
+      let index = this.props.index;
+      this.props.targetValue({ value, index });
+    }
   };
   editHandleChange = event => {
     event.preventDefault();
-    if (
-      !this.props.clone[this.props.index].name == "" &&
-      this.props.history.location.pathname == "/edittodo"
-    ) {
+    if (!this.props.clone[this.props.index].name == "") {
+      let name = this.props.clone[this.props.index].name;
+      let id = this.props.id;
+      let completed = this.props.completed;
+      this.props.addnewValue({ name, id, completed });
+      this.props.history.push("/listtodo");
     } else {
-      alert("item list can't be empty");
+      alert("todo can't be empty");
     }
   };
   render() {
+    const value = this.props.clone[this.props.index].name;
     return (
       <div className="container">
         <div>
           <form onSubmit={this.editHandleChange}>
             <input
-              value={this.props.clone[this.props.index].name}
+              value={value}
               className="form-control"
+              key={this.props.index}
               onChange={this.targetHandler}
               type="text"
             />

@@ -10,26 +10,24 @@ class Todo extends React.Component {
   }
   HandleChange = event => {
     if (this.props.history.location.pathname == "/edittodo") {
-      const i = event.target.id;
-      const j = event.target.checked;
-      try {
-      } catch (error) {}
+      let name = event.target.name;
+      let id = event.target.id;
+      let completed = event.target.checked;
+      this.props.toggletoDo({ name, id, completed });
     }
   };
   deleteHandle = event => {
-    // if (this.props.history.location.pathname == "/edittodo") {
+    if (this.props.history.location.pathname == "/edittodo") {
       try {
-        this.props.forDelete({id:event.target.id});
-          this.props.getListTodo();
-       
+        this.props.forDelete({ id: event.target.id });
+        this.props.getListTodo();
       } catch (error) {}
-    // }
-};
-componentWillMount(){
- this.props.getListTodo();
+    }
   };
+  componentWillMount() {
+    this.props.getListTodo();
+  }
   render() {
-    console.log(this.props.sstate.listReducer.data);
     let result = _.map(this.props.sstate.listReducer.data, (data, index) => {
       return (
         <div className="child" key={index}>
