@@ -1,27 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
-import { completed, forTarget, isEmpty } from "./actions";
-import axios from "axios";
-import AxiosServer from "./axios";
+import { forTarget, addTodo, isEmpty } from "../redux/actions";
 
 class AddTodo extends React.Component {
   constructor(props) {
     super(props);
   }
   inputChange = event => {
-    this.props.Target(event.target.value);
+    this.props.targett(event.target.value);
   };
   handleChange = event => {
     event.preventDefault();
-    if (this.props.value == "") {
-      alert("Please enter any todoname");
-    } else {
-      this.props.IsEmpty();
-      AxiosServer("postt", {
-        name: this.props.value,
-        completed: false
-      });
-    }
+    this.props.AddTodo(this.props.value);
+    this.props.ForEmptyValue();
+    this.props.history.push("/listtodo");
   };
   render() {
     return (
@@ -45,14 +37,14 @@ class AddTodo extends React.Component {
 }
 function mapStateToProps(state) {
   return {
-    value: state.value,
-    id: state.id
+    value: state.addtodoReducer.value
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    Target: (value, index) => dispatch(forTarget(value, index)),
-    IsEmpty: value => dispatch(isEmpty(value))
+    targett: value => dispatch(forTarget(value)),
+    AddTodo: value => dispatch(addTodo(value)),
+    ForEmptyValue: () => dispatch(isEmpty())
   };
 }
 export default connect(

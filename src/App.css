@@ -29,16 +29,25 @@ span {
   border-radius: 18px;
   outline: none;
 }
-li{
+li {
   list-style: none;
   display: inline-block;
   padding: 10px;
   background-color: bisque;
   margin-right: 1px;
 }
-.main{
+.main {
   margin-top: 20px;
 }
-.addtodo{
+.addtodo {
   margin-left: 25px;
+}
+    li:nth-child(6) {
+      float: right;
+    }
+    li:nth-child(5) {
+      float: right;
+    }
+li:nth-child(4) {
+  float: right;
 }

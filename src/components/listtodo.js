@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./App.css";
 import _ from "lodash";
-import axios from "axios";
-import EditTodo from "./editContainer";
+import EditTodo from "../components/edittodo";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import AxiosServer from "./axios";
+import {
+  listTodo,
+  ifSuccess,
+  deleteTodo,
+  toggleTodo
+} from "../redux/actions";
+import { connect } from "react-redux";
 
 class Todo extends React.Component {
   constructor(props) {
@@ -13,39 +17,25 @@ class Todo extends React.Component {
   }
   HandleChange = event => {
     if (this.props.history.location.pathname == "/edittodo") {
-      const i = event.target.id;
-      const j = event.target.checked;
-      try {
-        AxiosServer("put", {
-          name: event.target.name,
-          completed: j,
-          i: i
-        }).then(() => {
-          AxiosServer("get").then(result => {
-            this.props.List(result.data);
-          });
-        });
-      } catch (error) {}
+      let name = event.target.name;
+      let id = event.target.id;
+      let completed = event.target.checked;
+      this.props.toggletoDo({ name, id, completed });
     }
   };
   deleteHandle = event => {
     if (this.props.history.location.pathname == "/edittodo") {
       try {
-        AxiosServer("delete", { id: event.target.id }).then(() => {
-          AxiosServer("get").then(result => {
-            this.props.List(result.data);
-          });
-        });
+        this.props.forDelete({ id: event.target.id });
+        this.props.getListTodo();
       } catch (error) {}
     }
   };
   componentWillMount() {
-    AxiosServer("get").then(result => {
-      this.props.List(result.data);
-    });
+    this.props.getListTodo();
   }
   render() {
-    let result = _.map(this.props.afterFetch, (data, index) => {
+    let result = _.map(this.props.listData.listReducer.data, (data, index) => {
       return (
         <div className="child" key={index}>
           <input
@@ -91,4 +81,21 @@ class Todo extends React.Component {
     return <div className="container">{result}</div>;
   }
 }
-export default Todo;
+const mapStatusToProps = state => {
+  return {
+    listData: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getListTodo: () => dispatch(listTodo()),
+    forSuccess: () => dispatch(ifSuccess()),
+    forDelete: id => dispatch(deleteTodo(id)),
+    toggletoDo: (name, id, completed) =>
+      dispatch(toggleTodo(name, id, completed))
+  };
+};
+export default connect(
+  mapStatusToProps,
+  mapDispatchToProps
+)(Todo);
